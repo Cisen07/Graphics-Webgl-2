@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Chai Lin">
+  <title>图形变换</title>
+
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/grayscale.css" rel="stylesheet">
+</head>
+
+<script type="text/javascript" src="./lib/three.min.js"></script>
+<script type="text/javascript" src="./lib/MTLLoader.js"></script>
+<script type="text/javascript" src="./lib/OBJLoader.js"></script>
+<script type="text/javascript" src="./Common/MV.js"></script>
+<script type="text/javascript" src="./main.js"></script>
+<script type="text/javascript" src="./toolCL.js"></script>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">计算机图形学作业</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="masthead">
+    <div class="container d-flex h-100 align-items-center">
+      <div class="mx-auto text-center">
+        <h1 class="mx-auto my-0 text-uppercase">计算机图形学FinalProject</h1>
+        <br>
+        <h3 class="text-white-50 mx-auto mt-2 mb-5">柴林 2017141471052</h2>
+        <a href="#mainCanvas" class="btn btn-primary js-scroll-trigger">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="mainSection" class="about-section text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mx-auto">
+          <canvas id="mainCanvas" width="450px" height="450px" >
+            Oops ... your browser doesn't support the HTML5 canvas element
+          </canvas>
+        </div>
+        <div style="text-align: left;" class="col-lg-3 mx-auto" id="controllingArea2">
+          <h3 class="text-white-50 mx-auto mt-2 mb-5">图像变换</h3>
+          <div class="pull-left">
+            <font class="text-white-50 mx-auto mt-2 mb-5">图形选择</font>
+            <select name="chooseTheShape" id="choice">
+              <option value="0">足球</option>
+              <option value="1">狐狸</option>
+              <option value="2">轿车</option>
+            </select>
+          </div>
+          <hr>
+          <div>
+            <button class="btn btn-info btn-sm" id="dejavu">
+              变换复位
+            </button>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">平移：</font>
+            <br>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="goUpper" value="0.2">
+                上
+              </button>
+              <button class="btn btn-info btn-sm" id="goLower" value="-0.2">
+                下
+              </button>
+              <button class="btn btn-info btn-sm" id="goLefter" value="-0.2">
+                左
+              </button>
+              <button class="btn btn-info btn-sm" id="goRighter" value="0.2">
+                右
+              </button>
+              <button class="btn btn-info btn-sm" id="goFronter" value="-0.2">
+                前
+              </button>
+              <button class="btn btn-info btn-sm" id="goMoreBack" value="0.2">
+                后
+              </button>
+            </div>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">绕X轴旋转：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="rotateX1" value="10"> 
+                逆时针
+              </button>
+              <button class="btn btn-info btn-sm" id="rotateX2" value="-10">
+                顺时针
+              </button>
+            </div>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">
+              <button class="btn btn-info btn-sm" id="fog"> 
+                开启雾化
+              </button>
+            </font>
+          </div>
+          <!-- <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">绕Y轴旋转：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="rotateY1" value="10"> 
+                逆时针
+              </button>
+              <button class="btn btn-info btn-sm" id="rotateY2" value="-10">
+                顺时针
+              </button>
+            </div>
+          </div>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">绕Z轴旋转：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="rotateZ1" value="10"> 
+                逆时针
+              </button>
+              <button class="btn btn-info btn-sm" id="rotateZ2" value="-10">
+                顺时针
+              </button>
+            </div>
+          </div> -->
+          <br>
+        </div>
+        <div style="text-align: left;" class="col-lg-3 mx-auto" id="controllingArea2">
+          <h3 class="text-white-50 mx-auto mt-2 mb-5">漫游</h3>
+        <div class="pull-left">
+          <div>
+              <button class="btn btn-info btn-sm" id="dejavu2">
+                漫游复位
+              </button>
+            </div>
+            <br>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5">J缩小，L变大</h5>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5">W/S控制视点绕X轴旋转，A/D 控制视点绕Y轴旋转</h5>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5">P键切换ortho和perspective</h5>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5" id="idForOrtho">当前相机: Ortho</h5>
+          <!-- <h5 class="text-white-50 mx-auto mt-2 mb-5" id="idForOrtho">屏幕放大缩小试试看！</h5> -->
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black small text-center text-white-50">
+    <div class="container">
+      Copyright &copy; Chai Lin
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- <script src="vendor/bootstrap/bootstrap-slider/bootstrap-slider.min.js"></script> -->
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for this template -->
+  <script src="js/grayscale.min.js"></script>
+
+<img id = "texImage" src = "modelResource/squirtle-pokemon-go-obj/Squirtle.png" hidden />
+
+</body>
+</html>

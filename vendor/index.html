@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Chai Lin">
+  <title>图形变换</title>
+
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link href="vendor/bootstrap/bootstrap-slider/css/bootstrap-slider.css" rel="stylesheet"> -->
+  <!-- <link rel="stylesheet" href="vendor/bootstrap/bootstrap-slider/bootstrap-slider.min.js"> -->
+  <link href="css/grayscale.css" rel="stylesheet">
+</head>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+  attribute vec4 vPosition;
+  attribute vec4 vColor;
+  uniform mat4 currentTransformationMatrix;
+  uniform mat4 u_scaleMatrix;
+  uniform mat4 u_modelViewMatrix;
+  uniform mat4 u_projectionMatrix;
+  varying vec4 fColor;
+  void main()
+  {
+    gl_Position.x = vPosition.x;
+    gl_Position.y = vPosition.y;
+    gl_Position.z = vPosition.z;
+    gl_Position.w = vPosition.w;
+    gl_Position = u_projectionMatrix * u_modelViewMatrix * u_scaleMatrix * currentTransformationMatrix * vPosition;
+    fColor = vColor;
+  }
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+  precision mediump float;
+  varying vec4 fColor;
+  void
+  main()
+  {
+      gl_FragColor = fColor;
+  }
+</script>
+
+<script type="text/javascript" src="./Common/webgl-utils.js"></script>
+<script type="text/javascript" src="./Common/initShaders.js"></script>
+<script type="text/javascript" src="./Common/MV.js"></script>
+<script type="text/javascript" src="./imageTransformation2.js"></script>
+<script type="text/javascript" src="./imageTransformation2.js"></script>
+<script type="text/javascript" src="./toolCL.js"></script>
+<script type="text/javascript" src="./webgl-obj-loader.js"></script>
+
+<body id="page-top">
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+      <a class="navbar-brand js-scroll-trigger" href="#page-top">计算机图形学作业</a>
+    </div>
+  </nav>
+
+  <!-- Header -->
+  <header class="masthead">
+    <div class="container d-flex h-100 align-items-center">
+      <div class="mx-auto text-center">
+        <h1 class="mx-auto my-0 text-uppercase">3D网格建模和漫游</h1>
+        <br>
+        <h3 class="text-white-50 mx-auto mt-2 mb-5">柴林 2017141471052</h2>
+        <a href="#gl-canvas" class="btn btn-primary js-scroll-trigger">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- About Section -->
+  <section id="mainSection" class="about-section text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mx-auto">
+          <canvas id="gl-canvas" width="512" height="512">
+            Oops ... your browser doesn't support the HTML5 canvas element
+          </canvas>
+        </div>
+        <div style="text-align: left;" class="col-lg-3 mx-auto" id="controllingArea2">
+          <h3 class="text-white-50 mx-auto mt-2 mb-5">图像变换</h3>
+          <div class="pull-left">
+            <font class="text-white-50 mx-auto mt-2 mb-5">图形选择</font>
+            <select name="chooseTheShape" id="fractal">
+              <option value="0">一把椅子</option>
+              <option value="1">一顶帽子</option>
+              <option value="2">一把剑</option>
+            </select>
+          </div>
+          <hr>
+          <div>
+            <button class="btn btn-info btn-sm" id="dejavu">
+              复位
+            </button>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">平移：</font>
+            <br>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="goUpper" value="0.2">
+                上
+              </button>
+              <button class="btn btn-info btn-sm" id="goLower" value="-0.2">
+                下
+              </button>
+              <button class="btn btn-info btn-sm" id="goLefter" value="-0.2">
+                左
+              </button>
+              <button class="btn btn-info btn-sm" id="goRighter" value="0.2">
+                右
+              </button>
+              <button class="btn btn-info btn-sm" id="goFronter" value="-0.2">
+                前
+              </button>
+              <button class="btn btn-info btn-sm" id="goMoreBack" value="0.2">
+                后
+              </button>
+            </div>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">绕画布中心旋转：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="anticlockwise" value="10"> 
+                逆时针
+              </button>
+              <button class="btn btn-info btn-sm" id="clockwise" value="-10">
+                顺时针
+              </button>
+            </div>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">绕图形中心旋转：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="anticlockwise2" value="10"> 
+                逆时针
+              </button>
+              <button class="btn btn-info btn-sm" id="clockwise2" value="-10">
+                顺时针
+              </button>
+            </div>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">反射：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="reflectX" value="1"> 
+                X轴
+              </button>
+              <button class="btn btn-info btn-sm" id="reflectY" value="2">
+                Y轴
+              </button>
+              <button class="btn btn-info btn-sm" id="reflectO" value="3">
+                原点
+              </button>
+            </div>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">变比：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="XPlus" value="1"> 
+                X+
+              </button>
+              <button class="btn btn-info btn-sm" id="XMinus" value="2">
+                X-
+              </button>
+              <button class="btn btn-info btn-sm" id="YPlus" value="3">
+                Y+
+              </button>
+              <button class="btn btn-info btn-sm" id="YMinus" value="4">
+                Y-
+              </button>
+            </div>
+          </div>
+          <br>
+          <div>
+            <font class="text-white-50 mx-auto mt-2 mb-5">错切：</font>
+            <div class="btn-group">
+              <button class="btn btn-info btn-sm" id="shearXPlus" value="1"> 
+                X+
+              </button>
+              <button class="btn btn-info btn-sm" id="shearXMinus" value="2">
+                X-
+              </button>
+              <button class="btn btn-info btn-sm" id="shearYPlus" value="3">
+                Y+
+              </button>
+              <button class="btn btn-info btn-sm" id="shearYMinus" value="4">
+                Y-
+              </button>
+            </div>
+          </div>
+        </div>
+        <div style="text-align: left;" class="col-lg-3 mx-auto" id="controllingArea2">
+          <h3 class="text-white-50 mx-auto mt-2 mb-5">漫游</h3>
+        <div class="pull-left">
+          <div>
+              <button class="btn btn-info btn-sm" id="dejavu2">
+                漫游复位
+              </button>
+            </div>
+            <br>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5">J缩小，L变大</h5>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5">W/S控制视点绕X轴旋转，A/D 控制视点绕Z旋转</h5>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5">P键切换ortho和perspective</h5>
+          <h5 class="text-white-50 mx-auto mt-2 mb-5" id="idForOrtho">now: Ortho</h5>
+        </div>
+      </div>
+    </div>
+    <br>
+    <br>
+    <br>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black small text-center text-white-50">
+    <div class="container">
+      Copyright &copy; Chai Lin
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <!-- <script src="vendor/bootstrap/bootstrap-slider/bootstrap-slider.min.js"></script> -->
+  <!-- Plugin JavaScript -->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <!-- Custom scripts for this template -->
+  <script src="js/grayscale.min.js"></script>
+</body>
+</html>
