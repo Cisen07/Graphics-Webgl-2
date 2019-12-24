@@ -29,6 +29,7 @@ var tempMa1
 var tempMa
 var isOrtho = false
 var fogFlag = false
+var anim = false;
 var testA = 0
 var testB = 0
 var testC = 0
@@ -264,6 +265,22 @@ window.onload = function init() {
             fogFlag = true;
         }
     }
+    document.getElementById("xMode").onclick = function() {
+        if(!anim) {
+            removeAnObj(scene);
+            matrialLoader(scene, paths[0], files[0], initScale[0], rX, rY, rZ, tX, tY+0.3, tZ);
+            matrialLoader(scene, paths[1], files[1], initScale[1], rX, rY, rZ, tX, tY+0.3, tZ);
+            matrialLoader(scene, paths[2], files[2], initScale[2], rX, rY, rZ, tX, tY, tZ+0.3);
+            axesHelper = null;
+            anim = true;
+        } else {
+            removeAnObj(scene);
+            removeAnObj(scene);
+            removeAnObj(scene);
+            axesHelper = new THREE.AxesHelper( size );
+            anim = false;
+        }
+    }
     
     document.getElementById("rotateY1").onclick = function() {
         rY += 0.3;
@@ -290,6 +307,30 @@ window.onload = function init() {
 
 
 function draw() {
-    renderer.render(scene, camera);
-}
+    console.log(">>>");
+    console.log(anim);
+    if(anim) {
+        tempMa1 = [eye_x, eye_y, eye_z];
+        tempMa = aVec3_mult_aMat3(tempMa1, rotateY(-0.1));
+        console.log(tempMa)
+        eye_x = tempMa[0];
+        eye_y = tempMa[1];
+        eye_z = tempMa[2];
+        
+        tempMa1 = [up_x, up_y, up_z];
+        tempMa = aVec3_mult_aMat3(tempMa1, rotateY(-0.1));
+        up_x = tempMa[0];
+        up_y = tempMa[1];
+        up_z = tempMa[2];
+        
+        camera.position.set(eye_x+testA, eye_y+testB, eye_z+testC);
+        camera.up = new THREE.Vector3(up_x, up_y, up_z);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
 
+        renderer.render(scene, camera);
+        requestAnimationFrame(draw)
+        console.log(">>>???");
+    } else {
+        renderer.render(scene, camera);
+    }
+}
