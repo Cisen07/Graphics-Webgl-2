@@ -307,8 +307,6 @@ window.onload = function init() {
 
 
 function draw() {
-    console.log(">>>");
-    console.log(anim);
     if(anim) {
         tempMa1 = [eye_x, eye_y, eye_z];
         tempMa = aVec3_mult_aMat3(tempMa1, rotateY(-0.1));
@@ -329,7 +327,7 @@ function draw() {
 
         renderer.render(scene, camera);
         requestAnimationFrame(draw)
-        console.log(">>>???");
+        // console.log(">>>???");
     } else {
         renderer.render(scene, camera);
     }
