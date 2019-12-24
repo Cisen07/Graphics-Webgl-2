@@ -5,12 +5,10 @@ var renderer = null;
 var mesh = null;
 var id = null;
 
-// var paths = ['/modelResource/camero-2010-low-poly-obj/', '/modelResource/sword-01-obj/', '/modelResource/low-poly-fox-by-pixelmannen-obj/', '/modelResource/sonic-the-hedgehog-obj/', '/modelResource/nike-air-max-low-poly-obj/', '/modelResource/minion-obj/', '/modelResource/tree-obj/', '/modelResource/football-soccer-ball-obj/']
-// var files = ['camero-2010-low-poly', 'sword-01', 'low-poly-fox-by-pixelmannen', 'sonic-the-hedgehog', 'nike-air-max-low-poly', 'minion', 'tree', 'football-soccer-ball']
 var paths = ['/modelResource/football-soccer-ball-obj/', '/modelResource/low-poly-fox-by-pixelmannen-obj/', '/modelResource/camero-2010-low-poly-obj/']
 var files = ['football-soccer-ball', 'low-poly-fox-by-pixelmannen', 'camero-2010-low-poly']
 var scale = 1
-var initScale = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+var initScale = [1, 1, 1, 1, 1]
 initScale[0] = 0.03
 initScale[1] = 0.03
 initScale[2] = 1
@@ -179,14 +177,14 @@ window.onload = function init() {
                 camera.position.set(eye_x+testA, eye_x+testB, eye_x+testC);
                 camera.up = new THREE.Vector3(up_x, up_y, up_z);
                 camera.lookAt(new THREE.Vector3(0, 0, 0));
-                document.getElementById("idForOrtho").innerHTML="now: Perspective";
+                document.getElementById("idForOrtho").innerHTML="当前相机: Perspective";
             } else {
                 //切换成正交投影摄像机
                 camera = new THREE.OrthographicCamera(-5, 5, 3.75, -3.75, 0.1, 1000);
                 camera.position.set(eye_x+testA, eye_x+testB, eye_x+testC);
                 camera.up = new THREE.Vector3(up_x, up_y, up_z);
                 camera.lookAt(new THREE.Vector3(0, 0, 0));
-                document.getElementById("idForOrtho").innerHTML="now: Ortho";
+                document.getElementById("idForOrtho").innerHTML="当前相机: Ortho";
             }
             isOrtho = !isOrtho;
         }
@@ -267,27 +265,27 @@ window.onload = function init() {
         }
     }
     
-    // document.getElementById("rotateY1").onclick = function() {
-    //     rY += 0.3;
-    //     removeAnObj(scene);
-    //     matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
-    // }
-    // document.getElementById("rotateY2").onclick = function() {
-    //     rY -= 0.3;
-    //     removeAnObj(scene);
-    //     matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
-    // }
-    // document.getElementById("rotateZ1").onclick = function() {
-    //     rZ += 0.3;
-    //     removeAnObj(scene);
-    //     matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
-    // }
-    // document.getElementById("rotateZ2").onclick = function() {
-    //     rZ -= 0.3;
-    //     removeAnObj(scene);
-    //     console.log(rZ)
-    //     matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
-    // }
+    document.getElementById("rotateY1").onclick = function() {
+        rY += 0.3;
+        removeAnObj(scene);
+        matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
+    }
+    document.getElementById("rotateY2").onclick = function() {
+        rY -= 0.3;
+        removeAnObj(scene);
+        matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
+    }
+    document.getElementById("rotateZ1").onclick = function() {
+        rZ += 0.3;
+        removeAnObj(scene);
+        matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
+    }
+    document.getElementById("rotateZ2").onclick = function() {
+        rZ -= 0.3;
+        removeAnObj(scene);
+        console.log(rZ)
+        matrialLoader(scene, paths[th], files[th], scale, rX, rY, rZ, tX, tY, tZ);
+    }
 }
 
 
