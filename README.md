@@ -7,6 +7,7 @@ There's must be a server to show the model. I used the extension called "**Live 
 ## Basic info
 - The model is from [Clara.io](https://clara.io/scenes)
 - The program used the 3D Lib "**Three.js**"
+- The framework of font-end using bootstrap.
 ### Functions
 - The presentation of three different models
 - Light and fixture
